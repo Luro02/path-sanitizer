@@ -1,5 +1,3 @@
-use core::iter::IntoIterator;
-
 use crate::sanitizer::Sanitizer;
 
 /// Can be used to chain two sanitizers, first `A` is applied then `B`.
@@ -17,11 +15,10 @@ impl<A: Sanitizer, B: Sanitizer> Then<A, B> {
 }
 
 impl<A: Sanitizer, B: Sanitizer> Sanitizer for Then<A, B> {
-    type IntoIter<I: Iterator<Item = char>> =
-        <B as Sanitizer>::IntoIter<<<A as Sanitizer>::IntoIter<I> as IntoIterator>::IntoIter>;
+    type Iter<I: Iterator<Item = char>> = <B as Sanitizer>::Iter<<A as Sanitizer>::Iter<I>>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        self.b.sanitize(self.a.sanitize(iter).into_iter())
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        self.b.sanitize(self.a.sanitize(iter))
     }
 }
 

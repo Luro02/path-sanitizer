@@ -11,9 +11,9 @@ impl<M: Map<char, char>> From<M> for Replacer<M> {
 }
 
 impl<M: Map<char, char>> Sanitizer for Replacer<M> {
-    type IntoIter<I: Iterator<Item = char>> = ReplacerIter<I, M>;
+    type Iter<I: Iterator<Item = char>> = ReplacerIter<I, M>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
         ReplacerIter {
             iter: iter.into_iter(),
             map: self.0,

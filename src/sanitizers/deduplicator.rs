@@ -12,13 +12,10 @@ impl<F: FnMut(char) -> bool> Deduplicator<F> {
 }
 
 impl<F: FnMut(char) -> bool> Sanitizer for Deduplicator<F> {
-    type IntoIter<I>
-    where
-        I: Iterator<Item = char>,
-    = DeduplicatorIter<F, I>;
+    type Iter<I: Iterator<Item = char>> = DeduplicatorIter<F, I>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        DeduplicatorIter::new(self.0, iter.into_iter())
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        DeduplicatorIter::new(self.0, iter)
     }
 }
 

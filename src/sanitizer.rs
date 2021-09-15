@@ -1,17 +1,17 @@
 use core::iter;
 
 pub trait Sanitizer {
-    type IntoIter<I: Iterator<Item = char>>: IntoIterator<Item = char>;
+    type Iter<I: Iterator<Item = char>>: Iterator<Item = char>;
 
     #[must_use]
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter>;
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I>;
 }
 
 impl Sanitizer for () {
-    type IntoIter<I: Iterator<Item = char>> = I;
+    type Iter<I: Iterator<Item = char>> = I;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        iter.into_iter()
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        iter
     }
 }
 
@@ -20,10 +20,10 @@ where
     //
     F: FnMut(char) -> Option<char>,
 {
-    type IntoIter<I: Iterator<Item = char>> = iter::FlatMap<I, Option<char>, Self>;
+    type Iter<I: Iterator<Item = char>> = iter::FlatMap<I, Option<char>, Self>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        iter.into_iter().flat_map(self)
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        iter.flat_map(self)
     }
 }
 
@@ -43,10 +43,10 @@ where
     //
     for<'a> F: FnMut(&'a char) -> bool,
 {
-    type IntoIter<I: Iterator<Item = char>> = iter::Filter<I, F>;
+    type Iter<I: Iterator<Item = char>> = iter::Filter<I, F>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        iter.into_iter().filter(self.0)
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        iter.filter(self.0)
     }
 }
 

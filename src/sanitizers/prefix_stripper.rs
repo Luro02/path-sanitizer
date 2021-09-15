@@ -13,10 +13,10 @@ impl<P: FnMut(char) -> bool> PrefixStripper<P> {
 }
 
 impl<P: FnMut(char) -> bool> Sanitizer for PrefixStripper<P> {
-    type IntoIter<I: Iterator<Item = char>> = PrefixStripperIter<I, P>;
+    type Iter<I: Iterator<Item = char>> = PrefixStripperIter<I, P>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        PrefixStripperIter::new(iter.into_iter(), self.is_prefix)
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        PrefixStripperIter::new(iter, self.is_prefix)
     }
 }
 

@@ -20,10 +20,10 @@ impl<const P: char, const N: usize> Padder<P, N> {
 }
 
 impl<const P: char, const N: usize> Sanitizer for Padder<P, N> {
-    type IntoIter<I: Iterator<Item = char>> = PadderIter<I, P, N>;
+    type Iter<I: Iterator<Item = char>> = PadderIter<I, P, N>;
 
-    fn sanitize<I: IntoIterator<Item = char>>(self, iter: I) -> Self::IntoIter<I::IntoIter> {
-        PadderIter::new(iter.into_iter(), self.strings, self.insert_before)
+    fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
+        PadderIter::new(iter, self.strings, self.insert_before)
     }
 }
 
