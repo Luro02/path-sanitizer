@@ -1,3 +1,5 @@
+use core::str::Chars;
+
 use crate::sanitizer::Sanitizer;
 use crate::sanitizers::{
     Control, Deduplicator, Padder, PrefixStripper, Replacer, Then, Whitespace,
@@ -31,11 +33,11 @@ pub trait SanitizerExt: Sanitizer + Sized {
     }
 
     #[must_use]
-    fn padding<const P: char, const N: usize>(
+    fn padding<'a, const P: char, const N: usize>(
         self,
-        strings: [&'static str; N],
-    ) -> Then<Self, Padder<P, N>> {
-        self.then(Padder::new(strings, None))
+        strings: [&'a str; N],
+    ) -> Then<Self, Padder<Chars<'a>, P, N>> {
+        self.then(Padder::new(strings.map(str::chars), None))
     }
 
     #[must_use]
