@@ -33,7 +33,7 @@ impl<const RP: char, const P: char> Windows<RP, P> {
 
 impl<const RP: char, const P: char> Platform for Windows<RP, P> {
     type FilenameSanitizer<'a> = impl Sanitizer + 'a;
-    type FolderSanitizer<'a> = Replacer<[(char, char); 2]>;
+    type FolderSanitizer<'a> = impl Sanitizer + 'a;
 
     fn filename_sanitizer(&self) -> Self::FilenameSanitizer<'_> {
         // TODO: this should also padd something like: NUL.txt to NUL_.txt
@@ -50,7 +50,13 @@ impl<const RP: char, const P: char> Platform for Windows<RP, P> {
     }
 
     fn folder_sanitizer(&self) -> Self::FolderSanitizer<'_> {
-        unimplemented!()
+        Replacer::from(Self::RESERVED_CHARACTERS.map(|c| (c, RP)))
+            // replace control characters
+            .replace_control::<RP>()
+            // remove leading whitespace
+            .strip_prefix(char::is_whitespace)
+            // NOTE: those are not allowed in folders either
+            .padding::<P, 24>(Self::RESERVED_FILENAMES)
     }
 }
 
