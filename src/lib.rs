@@ -2,6 +2,12 @@
 #![feature(generic_associated_types)]
 #![feature(type_alias_impl_trait)]
 #![feature(const_generics_defaults)]
+#![warn(clippy::nursery, clippy::pedantic)]
+#![allow(
+    clippy::module_name_repetitions,
+    clippy::module_inception,
+    clippy::redundant_pub_crate
+)]
 
 mod platform;
 mod platforms;

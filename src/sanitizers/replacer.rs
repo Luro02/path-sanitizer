@@ -14,10 +14,7 @@ impl<M: Map<char, char>> Sanitizer for Replacer<M> {
     type Iter<I: Iterator<Item = char>> = ReplacerIter<I, M>;
 
     fn sanitize<I: Iterator<Item = char>>(self, iter: I) -> Self::Iter<I> {
-        ReplacerIter {
-            iter: iter.into_iter(),
-            map: self.0,
-        }
+        ReplacerIter { iter, map: self.0 }
     }
 }
 
