@@ -1,6 +1,6 @@
 use crate::Sanitizer;
 
-pub trait Platform {
+pub trait Platform: Default {
     type FilenameSanitizer<'a>: Sanitizer + 'a;
     type FolderSanitizer<'a>: Sanitizer + 'a;
 
