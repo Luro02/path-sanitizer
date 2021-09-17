@@ -6,7 +6,7 @@ pub struct Deduplicator<F>(F);
 
 impl<F: FnMut(char) -> bool> Deduplicator<F> {
     #[must_use]
-    pub fn new(f: F) -> Self {
+    pub(crate) fn new(f: F) -> Self {
         Self(f)
     }
 }
