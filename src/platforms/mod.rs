@@ -1,5 +1,5 @@
 mod linux;
-mod windows;
 mod onedrive;
+mod windows;
 
 pub use linux::*;
