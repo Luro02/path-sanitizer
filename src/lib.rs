@@ -18,6 +18,7 @@ mod utils;
 
 pub use platform::Platform;
 pub use sanitizer::Sanitizer;
+pub use sanitizer_ext::SanitizerExt;
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
