@@ -25,8 +25,8 @@ impl<const RP: char, const P: char> Windows<RP, P> {
         /// - `NUL.txt.txt`
         const RESERVED_FILENAMES: [&'static str; _] = [
             "CON", "PRN", "AUX", "NUL",
-            "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-            "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+            "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+            "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
         ];
     }
 }
@@ -46,7 +46,7 @@ impl<const RP: char, const P: char> Platform for Windows<RP, P> {
             // remove leading whitespace from the filename
             .strip_prefix(char::is_whitespace)
             // padd forbidden filenames
-            .padding::<P, 22>(Self::RESERVED_FILENAMES)
+            .padding::<P, 24>(Self::RESERVED_FILENAMES)
     }
 
     fn folder_sanitizer(&self) -> Self::FolderSanitizer<'_> {
