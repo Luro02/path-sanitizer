@@ -10,10 +10,10 @@
 )]
 
 mod platform;
-mod platforms;
+pub mod platforms;
 mod sanitizer;
 mod sanitizer_ext;
-mod sanitizers;
+pub mod sanitizers;
 mod utils;
 
 pub use platform::Platform;
