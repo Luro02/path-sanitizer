@@ -52,9 +52,23 @@ macro_rules! constant_arrays {
     };
 }
 
+/// A convenience function for sanitizing a string.
+#[cfg(feature = "alloc")]
+#[must_use]
+pub fn sanitize(string: &str, sanitizer: impl Sanitizer) -> String {
+    sanitizer.sanitize(string.chars()).into_iter().collect()
+}
+
 /// A convenience function for sanitizing a filename.
 #[cfg(feature = "alloc")]
 #[must_use]
-pub fn sanitize_filename<S: Sanitizer>(filename: &str, sanitizer: S) -> String {
-    sanitizer.sanitize(filename.chars()).into_iter().collect()
+pub fn sanitize_filename(string: &str, platform: impl Platform) -> String {
+    sanitize(string, platform.filename_sanitizer())
+}
+
+/// A convenience function for sanitizing a folder.
+#[cfg(feature = "alloc")]
+#[must_use]
+pub fn sanitize_folder(string: &str, platform: impl Platform) -> String {
+    sanitize(string, platform.folder_sanitizer())
 }
